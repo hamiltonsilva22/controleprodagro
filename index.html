@@ -1,0 +1,1693 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Agrícola</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Melhoria de Interface: Fontes com tema rural -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Corrige o erro 404 do favicon.ico -->
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div id="toast-body" class="toast-body">
+                Operação realizada com sucesso.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<section id="login-panel" class="login-container">
+    <div class="login-header">
+        <i class="bi bi-tractor" style="font-size: 60px; color: var(--cor-verde-escuro);"></i>
+        <h2 class="mt-2">Controle de Propriedade</h2>
+    </div>
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-content" type="button" role="tab" aria-controls="login-content" aria-selected="true">Entrar</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-content" type="button" role="tab" aria-controls="register-content" aria-selected="false">Registrar</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="login-content" role="tabpanel" aria-labelledby="login-tab">
+            <form id="login-form">
+                <div class="mb-3">
+                    <label for="login-username" class="form-label">Nome de Usuário</label>
+                    <input type="text" class="form-control" id="login-username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="login-password" class="form-label">Senha</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="login-password" required>
+                        <button class="btn btn-outline-secondary" type="button" id="toggle-password-visibility"><i class="bi bi-eye-fill"></i></button>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="remember-me">
+                    <label class="form-check-label" for="remember-me">Lembrar-me</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3">Entrar</button>
+                <div class="text-center">
+                    <a href="#" id="forgot-password-link" class="text-muted small" data-bs-toggle="modal" data-bs-target="#modalEsqueciSenha">Esqueci a senha</a>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="register-content" role="tabpanel" aria-labelledby="register-tab">
+            <form id="register-form">
+                <div class="mb-3">
+                    <label for="register-username" class="form-label">Nome de Usuário</label>
+                    <input type="text" class="form-control" id="register-username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="register-password" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="register-password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="register-confirm-password" class="form-label">Confirmar Senha</label>
+                    <input type="password" class="form-control" id="register-confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Registrar</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div id="dashboard" class="dashboard-container d-none">
+    <aside id="sidebar" class="sidebar">
+        <h3 class="text-white text-center mb-4">ERP Agrícola</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-panel="dashboard-home">
+                    <i class="bi bi-house-door-fill"></i> Dashboard
+                </a>
+            </li>
+            <!-- Grupo de Cadastros -->
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="fazendas-painel">
+                    <i class="bi bi-geo-alt-fill"></i> Fazendas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="talhoes-painel">
+                    <i class="bi bi-grid-fill"></i> Talhões
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="colaboradores-painel">
+                    <i class="bi bi-people-fill"></i> Colaboradores
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="maquinario-painel">
+                    <i class="bi bi-truck-flatbed"></i> Maquinário
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="estoque-painel">
+                    <i class="bi bi-box-fill"></i> Estoque
+                </a>
+            </li>
+            <!-- Grupo Operacional -->
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="planejamento-painel">
+                    <i class="bi bi-graph-up"></i> Planejamento
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="atividades-painel">
+                    <i class="bi bi-clipboard-check-fill"></i> Atividades
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="aplicacoes-painel">
+                    <i class="bi bi-droplet-fill"></i> Aplicações
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="manutencao-painel">
+                    <i class="bi bi-tools"></i> Manutenção
+                </a>
+            </li>
+            <!-- Grupo Financeiro -->
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="vendas-painel">
+                    <i class="bi bi-currency-dollar"></i> Vendas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="financas-painel">
+                    <i class="bi bi-cash-stack"></i> Finanças
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="dre-painel">
+                    <i class="bi bi-graph-up-arrow"></i> DRE
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="seguros-painel">
+                    <i class="bi bi-shield-fill-check"></i> Seguros
+                </a>
+            </li>
+            <!-- Grupo Sistema e Análise -->
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="relatorios-painel">
+                    <i class="bi bi-file-earmark-bar-graph-fill"></i> Relatórios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="alertas-painel">
+                    <i class="bi bi-bell-fill"></i> Alertas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-panel="perfil-painel">
+                    <i class="bi bi-person-circle"></i> Perfil
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="logout-link">
+                    <i class="bi bi-box-arrow-right"></i> Sair
+                </a>
+            </li>
+        </ul>
+
+        <!-- Melhoria de UI: Seletor de Tema (Modo Escuro) -->
+        <ul class="nav flex-column mt-auto">
+             <li class="nav-item">
+                <div class="form-check form-switch text-white ms-3 mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switcher">
+                    <label class="form-check-label" for="theme-switcher">
+                        <i class="bi bi-moon-stars-fill"></i> Modo Escuro
+                    </label>
+                </div>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-secondary d-lg-none me-3" id="sidebar-toggle-btn"><i class="bi bi-list"></i></button>
+                <h2 id="painel-titulo" class="mb-0">Dashboard Principal</h2>
+            </div>
+        </div>
+
+        <section id="dashboard-home" class="panel">
+            <h4>Visão Geral</h4>
+            <!-- Alertas movidos para o topo para maior visibilidade -->
+            <div class="row mt-2 mb-4">
+                <div class="col-12">
+                    <h5 class="mb-3"><i class="bi bi-bell-fill text-warning"></i> Alertas e Notificações</h5>
+                    <ul class="list-group" id="lista-alertas-dashboard">
+                        <li class="list-group-item">Nenhum alerta pendente.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" id="dashboard-cards-tour">
+                 <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center card-stat">
+                            <i class="bi bi-geo-alt-fill fs-1 text-success me-3"></i>
+                            <div>
+                                <h5 class="card-title mb-1">Fazendas</h5>
+                                <p class="card-text fs-2 fw-bold" id="total-fazendas">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center card-stat"> 
+                            <i class="bi bi-grid-fill fs-1 text-success me-3"></i>
+                            <div>
+                                <h5 class="card-title mb-1">Talhões</h5>
+                                <p class="card-text fs-2 fw-bold" id="total-talhoes">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center card-stat-warning"> 
+                            <i class="bi bi-box-fill fs-1 text-warning-emphasis me-3"></i> 
+                            <div>
+                                <h5 class="card-title mb-1">Itens em Estoque</h5>
+                                <p class="card-text fs-2 fw-bold" id="total-estoque">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-list-task"></i> Atividades do Dia</h5>
+                            <ul id="tarefas-hoje" class="list-group list-group-flush">
+                                <li class="list-group-item">Nenhuma tarefa agendada.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-3"><i class="bi bi-cloud-sun"></i> Previsão do Tempo</h5>
+                            <div class="text-center my-auto" style="color: var(--cor-texto);">
+                                <i class="bi bi-sun fs-1 text-warning"></i>
+                                <h2 class="display-5 fw-bold" id="temp-hoje">25°C</h2>
+                                <p class="lead" id="condicao-hoje">Sol</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-3"><i class="bi bi-graph-up"></i> Cotação do Mercado</h5>
+                            <ul class="list-unstyled my-auto">
+                                <li class="d-flex justify-content-between align-items-center mb-2" style="color: var(--cor-texto);">
+                                    <span><i class="bi bi-circle-fill text-success me-2"></i>Soja</span>
+                                    <strong id="cotacao-soja">R$ 135,00/sc</strong>
+                                </li>
+                                <li class="d-flex justify-content-between align-items-center mb-2" style="color: var(--cor-texto);">
+                                    <span><i class="bi bi-circle-fill text-warning me-2"></i>Milho</span>
+                                    <strong id="cotacao-milho">R$ 68,50/sc</strong>
+                                </li>
+                                <li class="d-flex justify-content-between align-items-center mb-2" style="color: var(--cor-texto);">
+                                    <span><i class="bi bi-circle-fill text-brown me-2" style="color: #6f4e37;"></i>Café</span>
+                                    <strong id="cotacao-cafe">R$ 2.189,00</strong>
+                                </li>
+                                <li class="d-flex justify-content-between align-items-center" style="color: var(--cor-texto);">
+                                    <span><i class="bi bi-currency-dollar text-primary me-2"></i>Dólar</span>
+                                    <strong id="cotacao-dolar">R$ 5,33</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Melhoria de Usabilidade: Acesso Rápido -->
+            <div class="row mt-4" id="acesso-rapido-tour">
+                <h4>Acesso Rápido</h4>
+                <div class="col-md-4 mb-3">
+                    <button class="btn btn-lg w-100 p-3" style="background-color: var(--cor-sucesso); color: white;" data-bs-toggle="modal" data-bs-target="#modalNovaVenda">
+                        <i class="bi bi-cash-coin me-2"></i> Registrar Nova Venda
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button class="btn btn-lg w-100 p-3" style="background-color: var(--cor-perigo); color: white;" data-bs-toggle="modal" data-bs-target="#modalNovaDespesa">
+                        <i class="bi bi-receipt me-2"></i> Registrar Nova Despesa
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button class="btn btn-lg w-100 p-3" style="background-color: #5bc0de; color: white;" data-bs-toggle="modal" data-bs-target="#modalAtividade">
+                        <i class="bi bi-clipboard-check me-2"></i> Agendar Nova Atividade
+                    </button>
+                </div>
+            </div>
+
+            <!-- Melhoria para Tomada de Decisão: Cards de Análise -->
+            <div class="row mt-4">
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header"><i class="bi bi-trophy-fill text-warning"></i> Top 3 Talhões Mais Rentáveis</div>
+                        <ul class="list-group list-group-flush" id="top-talhoes-rentaveis">
+                            <li class="list-group-item">Calculando...</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header"><i class="bi bi-pie-chart-fill text-danger"></i> Maiores Fontes de Despesa</div>
+                        <ul class="list-group list-group-flush" id="top-despesas">
+                            <li class="list-group-item">Calculando...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="fazendas-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Fazendas Cadastradas</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFazenda">
+                    <i class="bi bi-plus-circle me-2"></i> Adicionar Fazenda
+                </button>
+            </div>
+            <div id="lista-fazendas">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="talhoes-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Talhões Cadastrados</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTalhao">
+                    <i class="bi bi-plus-circle me-2"></i> Adicionar Talhão
+                </button>
+            </div>
+            <div id="lista-talhoes">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="planejamento-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Planejamentos Salvos</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPlanejamento">
+                    <i class="bi bi-plus-circle me-2"></i> Novo Planejamento
+                </button>
+            </div>
+            <div id="lista-planejamentos">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="estoque-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Gerenciar Estoque</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEstoque">
+                    <i class="bi bi-plus-circle me-2"></i> Novo Produto
+                </button>
+            </div>
+            <!-- Melhoria de Interface: KPI de Estoque -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-white bg-info">
+                        <div class="card-body">
+                            <h6 class="card-title">VALOR TOTAL EM ESTOQUE</h6>
+                            <p class="card-text fs-4 fw-bold" id="estoque-valor-total">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Melhoria de Interface: Tabela com busca -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Produtos em Estoque</h5>
+                <div class="d-flex align-items-center">
+                    <input type="text" id="busca-estoque" class="form-control me-2" placeholder="Buscar produto...">
+                    <button class="btn btn-outline-secondary btn-sm" id="btn-export-estoque-csv"><i class="bi bi-file-earmark-spreadsheet me-1"></i> Exportar</button>
+                </div>
+            </div>
+            <div id="tabela-estoque-container">
+                <!-- A tabela será renderizada aqui pelo JS -->
+            </div>
+        </section>
+
+        <section id="aplicacoes-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Aplicações Registradas</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAplicacao">
+                    <i class="bi bi-plus-circle me-2"></i> Nova Aplicação
+                </button>
+            </div>
+            <div id="lista-aplicacoes">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vendas-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Vendas Registradas</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalVenda">
+                    <i class="bi bi-plus-circle me-2"></i> Nova Venda
+                </button>
+            </div>
+            <div id="lista-vendas">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="colaboradores-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Colaboradores Cadastrados</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalColaborador">
+                    <i class="bi bi-plus-circle me-2"></i> Novo Colaborador
+                </button>
+            </div>
+            <div id="lista-colaboradores">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="maquinario-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Maquinário Cadastrado</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMaquinario">
+                    <i class="bi bi-plus-circle me-2"></i> Novo Maquinário
+                </button>
+            </div>
+            <div id="lista-maquinario">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="atividades-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Atividades Agendadas</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAtividade">
+                    <i class="bi bi-plus-circle me-2"></i> Nova Atividade
+                </button>
+            </div>
+            <div id="lista-atividades">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="financas-painel" class="panel d-none">
+            <!-- Melhoria de Interface: Cards de Resumo Financeiro -->
+            <div class="row mb-4 g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card text-white" style="background-color: var(--cor-sucesso);">
+                        <div class="card-body">
+                            <h6 class="card-title">RECEITA TOTAL</h6>
+                            <p class="card-text fs-4 fw-bold" id="financas-resumo-receita">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card text-white" style="background-color: var(--cor-perigo);">
+                        <div class="card-body">
+                            <h6 class="card-title">DESPESA TOTAL</h6>
+                            <p class="card-text fs-4 fw-bold" id="financas-resumo-despesa">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h6 class="card-title">LUCRO LÍQUIDO</h6>
+                            <p class="card-text fs-4 fw-bold" id="financas-resumo-lucro">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card text-white bg-info">
+                        <div class="card-body">
+                            <h6 class="card-title">CUSTOS OPERACIONAIS / MÊS</h6>
+                            <p class="card-text fs-4 fw-bold" id="financas-resumo-custos-fixos">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layout Simplificado do Painel Financeiro -->
+            <div class="row mt-4 g-4">
+                <!-- Coluna Esquerda: Gráfico Pizza -->
+                <div class="col-lg-5">
+                    <div class="card h-100">
+                        <div class="card-header">Composição das Despesas</div>
+                        <div class="card-body"><canvas id="grafico-composicao-despesas"></canvas></div>
+                    </div>
+                </div>
+                <!-- Coluna Direita: Extrato -->
+                <div class="col-lg-7">
+                    <div class="card h-100">
+                        <div class="card-header">Extrato Detalhado</div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="row g-2 align-items-center mb-3">
+                                <div class="col-md-3"><label for="filtro-data-inicio" class="form-label small">De:</label><input type="date" id="filtro-data-inicio" class="form-control form-control-sm"></div>
+                                <div class="col-md-3"><label for="filtro-data-fim" class="form-label small">Até:</label><input type="date" id="filtro-data-fim" class="form-control form-control-sm"></div>
+                                <div class="col-md-2"><label for="filtro-tipo" class="form-label small">Tipo:</label><select id="filtro-tipo" class="form-select form-select-sm"><option value="">Todos</option><option value="receita">Receita</option><option value="despesa">Despesa</option></select></div>
+                                <div class="col-md-4"><label for="filtro-descricao" class="form-label small">Buscar:</label><input type="text" id="filtro-descricao" class="form-control form-control-sm" placeholder="Ex: Venda, Aplicação..."></div>
+                            </div>
+                            <div id="financas-detalhes" class="list-group flex-grow-1" style="max-height: 400px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Linha Inferior: Gráfico de Lucratividade -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">Lucratividade por Talhão</div>
+                        <div class="card-body"><canvas id="grafico-lucro-talhao"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dre-painel" class="panel d-none">
+            <h4>Demonstrativo de Resultado do Exercício (DRE)</h4>
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label for="dre-fazenda-select" class="form-label">Selecione a Fazenda</label>
+                    <select class="form-select" id="dre-fazenda-select">
+                        <option value="">Consolidado da Empresa</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="dre-talhao-select" class="form-label">Selecione o Talhão (opcional)</label>
+                    <select class="form-select" id="dre-talhao-select" disabled>
+                        <option value="">Todos os Talhões</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Melhoria de Interface: DRE e Gráfico lado a lado -->
+                <div class="col-md-7" id="dre-resultado" style="max-height: 500px; overflow-y: auto;">
+                    <div class="alert alert-info">Selecione uma fazenda ou use a opção "Consolidado" para ver o DRE.</div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header">Composição das Despesas</div>
+                        <div class="card-body">
+                            <canvas id="dre-grafico-despesas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="seguros-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Seguros Registrados</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSeguro">
+                    <i class="bi bi-plus-circle me-2"></i> Novo Seguro
+                </button>
+            </div>
+            <div id="lista-seguros">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="alertas-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Alertas Registrados</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAlerta">
+                    <i class="bi bi-plus-circle me-2"></i> Novo Alerta
+                </button>
+            </div>
+            <div id="lista-alertas">
+                <!-- Melhoria de UX: Indicador de Carregamento -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="perfil-painel" class="panel d-none">
+            <!-- Melhoria de Interface: Layout de Perfil -->
+            <div class="row">
+                <div class="col-md-4 text-center border-end">
+                    <i class="bi bi-person-circle" style="font-size: 120px; color: var(--cor-verde-escuro);"></i>
+                    <h4 id="perfil-display-name" class="mt-2">Nome do Usuário</h4>
+                    <p class="text-muted" id="perfil-display-username">@username</p>
+                </div>
+                <div class="col-md-8">
+                    <form id="form-perfil">
+                        <fieldset class="mb-4">
+                            <legend>Dados Pessoais</legend>
+                            <div class="mb-3">
+                                <label for="perfil-nome" class="form-label">Nome Completo</label>
+                                <input type="text" class="form-control" id="perfil-nome">
+                            </div>
+                            <div class="mb-3">
+                                <label for="perfil-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="perfil-email">
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Alterar Senha</legend>
+                            <div class="mb-3">
+                                <label for="perfil-senha-atual" class="form-label">Senha Atual</label>
+                                <input type="password" class="form-control" id="perfil-senha-atual" placeholder="Deixe em branco para não alterar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="perfil-nova-senha" class="form-label">Nova Senha</label>
+                                <input type="password" class="form-control" id="perfil-nova-senha">
+                            </div>
+                            <div class="mb-3">
+                                <label for="perfil-confirma-nova-senha" class="form-label">Confirmar Nova Senha</label>
+                                <input type="password" class="form-control" id="perfil-confirma-nova-senha">
+                            </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <!-- Melhoria de Funcionalidade: Backup e Restore -->
+            <div class="row">
+                <div class="col-12">
+                    <h4>Gerenciamento de Dados</h4>
+                    <p class="text-muted">Faça backups regulares dos seus dados para evitar perdas.</p>
+                    <form id="form-backup">
+                        <button type="button" id="btn-backup" class="btn btn-info text-white me-2"><i class="bi bi-download me-2"></i> Fazer Backup (Exportar)</button>
+                        <button type="button" id="btn-resetar-dados" class="btn btn-danger me-2"><i class="bi bi-trash me-2"></i> Resetar Dados</button>
+                        <label for="input-restore" class="btn btn-warning"><i class="bi bi-upload me-2"></i> Restaurar Backup (Importar)</label>
+                        <input type="file" id="input-restore" class="d-none" accept=".json">
+                        <div id="restore-feedback" class="form-text mt-2"></div>
+
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Melhoria de Funcionalidade: Painel de Manutenção -->
+        <section id="manutencao-painel" class="panel d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Plano de Manutenção</h4>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalManutencao">
+                    <i class="bi bi-plus-circle me-2"></i> Registrar Manutenção
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header">Próximas Manutenções (por horas de uso)</div>
+                        <div class="card-body" id="lista-proximas-manutencoes">
+                            <!-- Conteúdo gerado via JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Histórico de Manutenções</span>
+                                <select id="manutencao-historico-select" class="form-select form-select-sm w-50">
+                                    <option value="">Filtrar por Máquina</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body" id="lista-historico-manutencoes" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Conteúdo gerado via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Melhoria de Funcionalidade: Painel de Relatórios -->
+        <section id="relatorios-painel" class="panel d-none">
+            <div class="row">
+                <!-- Relatório de Custo de Produção por Talhão -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">Relatório de Custo de Produção por Talhão</div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="relatorio-talhao-select"></select>
+                                <button class="btn btn-outline-secondary" type="button" id="btn-gerar-relatorio-custo">Gerar</button>
+                            </div>
+                            <div id="resultado-relatorio-custo" class="d-none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatório de Uso de Insumos -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">Relatório de Uso de Insumos por Período</div>
+                        <div class="card-body">
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-5"><input type="date" id="relatorio-insumos-data-inicio" class="form-control"></div>
+                                <div class="col-md-5"><input type="date" id="relatorio-insumos-data-fim" class="form-control"></div>
+                                <div class="col-md-2"><button class="btn btn-outline-secondary w-100" type="button" id="btn-gerar-relatorio-insumos">Gerar</button></div>
+                            </div>
+                            <div id="resultado-relatorio-insumos" class="d-none" style="max-height: 200px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatório de Produtividade -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">Relatório de Produtividade (Colaborador/Máquina)</div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="relatorio-produtividade-select"></select>
+                                <button class="btn btn-outline-secondary" type="button" id="btn-gerar-relatorio-produtividade">Gerar</button>
+                            </div>
+                            <div id="resultado-relatorio-produtividade" class="d-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Melhoria de Usabilidade: Modais de Acesso Rápido -->
+<!-- Modal Nova Venda -->
+<div class="modal fade" id="modalNovaVenda" tabindex="-1" aria-labelledby="modalNovaVendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalNovaVendaLabel"><i class="bi bi-cash-coin"></i> Registrar Nova Venda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-venda-rapida">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="venda-rapida-talhao" class="form-label">Talhão</label>
+                            <select class="form-select" id="venda-rapida-talhao" required></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="venda-rapida-safra" class="form-label">Safra</label>
+                            <select class="form-select" id="venda-rapida-safra" required></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="venda-rapida-sacas" class="form-label">Quantidade (scs)</label>
+                            <input type="number" class="form-control" id="venda-rapida-sacas" step="0.01" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="venda-rapida-preco-saca" class="form-label">Preço da Saca</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="venda-rapida-preco-saca" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="venda-rapida-total" class="form-label">Valor Total</label>
+                            <input type="text" class="form-control" id="venda-rapida-total" readonly disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="venda-rapida-data" class="form-label">Data da Venda</label>
+                            <input type="date" class="form-control" id="venda-rapida-data" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-venda-rapida">Salvar Venda</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nova Despesa -->
+<div class="modal fade" id="modalNovaDespesa" tabindex="-1" aria-labelledby="modalNovaDespesaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalNovaDespesaLabel"><i class="bi bi-receipt"></i> Registrar Nova Despesa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-despesa-rapida">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="despesa-rapida-descricao" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="despesa-rapida-descricao" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="despesa-rapida-valor" class="form-label">Valor</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="despesa-rapida-valor" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="despesa-rapida-data" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="despesa-rapida-data" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="despesa-rapida-talhao" class="form-label">Talhão (opcional)</label>
+                            <select class="form-select" id="despesa-rapida-talhao"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-despesa-rapida">Salvar Despesa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modais para Formulários -->
+
+<!-- Modal Fazenda -->
+<div class="modal fade" id="modalFazenda" tabindex="-1" aria-labelledby="modalFazendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalFazendaLabel">Dados da Fazenda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-fazenda">
+                    <input type="hidden" id="fazenda-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="fazenda-nome" class="form-label">Nome da Fazenda</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-tag-fill"></i></span>
+                                <input type="text" class="form-control" id="fazenda-nome" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="fazenda-proprietario" class="form-label">Proprietário</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                <input type="text" class="form-control" id="fazenda-proprietario" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="fazenda-area" class="form-label">Área Total (ha)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                                <input type="number" class="form-control" id="fazenda-area" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="fazenda-area-producao" class="form-label">Área de Produção (ha)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fazenda-area-producao" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="fazenda-area-reserva" class="form-label">Reserva Ambiental (ha)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fazenda-area-reserva" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-fazenda">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Talhão -->
+<div class="modal fade" id="modalTalhao" tabindex="-1" aria-labelledby="modalTalhaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTalhaoLabel">Dados do Talhão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-talhao">
+                    <input type="hidden" id="talhao-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="talhao-nome" class="form-label">Nome do Talhão</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                <input type="text" class="form-control" id="talhao-nome" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="talhao-fazenda" class="form-label">Fazenda</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <select class="form-select" id="talhao-fazenda" required></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="talhao-cultura" class="form-label">Cultura</label>
+                            <input type="text" class="form-control" id="talhao-cultura" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="talhao-area" class="form-label">Área (ha)</label>
+                            <input type="number" class="form-control" id="talhao-area" step="0.01" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="talhao-ano-plantio" class="form-label">Ano do Plantio</label>
+                            <input type="number" class="form-control" id="talhao-ano-plantio" placeholder="Ex: 2024" required>
+                        </div>
+                    </div>
+                    <fieldset class="border p-3 mt-2">
+                        <legend class="float-none w-auto px-2">Espaçamento</legend>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="talhao-esp-linhas" class="form-label">Entre Linhas (m)</label>
+                                <input type="number" class="form-control" id="talhao-esp-linhas" step="0.01" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="talhao-esp-plantas" class="form-label">Entre Plantas (m)</label>
+                                <input type="number" class="form-control" id="talhao-esp-plantas" step="0.01" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="talhao-total-pes" class="form-label">Total de Pés (Estimado)</label>
+                                <input type="number" class="form-control" id="talhao-total-pes" readonly disabled>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-talhao">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Planejamento -->
+<div class="modal fade" id="modalPlanejamento" tabindex="-1" aria-labelledby="modalPlanejamentoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPlanejamentoLabel">Dados do Planejamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-planejamento">
+                    <input type="hidden" id="planejamento-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="planejamento-nome" class="form-label">Nome do Planejamento (Ex: Soja 24/25)</label>
+                            <input type="text" class="form-control" id="planejamento-nome" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="planejamento-talhao" class="form-label">Talhão</label>
+                            <select class="form-select" id="planejamento-talhao" required></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="planejamento-cultura" class="form-label">Cultura</label>
+                            <input type="text" class="form-control" id="planejamento-cultura" placeholder="Ex: Café, Soja..." required>
+                        </div>
+                    </div>
+                    <fieldset class="border p-3 my-3">
+                        <legend class="float-none w-auto px-2">Estimativas</legend>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="planejamento-area" class="form-label">Área Plantada (ha)</label> 
+                                <input type="number" class="form-control" id="planejamento-area" step="0.01" required> 
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="planejamento-custo-ha" class="form-label">Custo Estimado (R$/ha)</label>
+                                <input type="number" class="form-control" id="planejamento-custo-ha" step="0.01" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="planejamento-produtividade" class="form-label">Produtividade (sc/ha)</label>
+                                <input type="number" class="form-control" id="planejamento-produtividade" step="0.01" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="planejamento-preco-saca" class="form-label">Preço Venda (R$/sc)</label>
+                                <input type="number" class="form-control" id="planejamento-preco-saca" step="0.01" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-planejamento">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Estoque -->
+<div class="modal fade" id="modalEstoque" tabindex="-1" aria-labelledby="modalEstoqueLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEstoqueLabel">Dados do Produto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-estoque">
+                    <input type="hidden" id="estoque-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-nome" class="form-label">Nome do Produto</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
+                                <input type="text" class="form-control" id="estoque-nome" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-classe" class="form-label">Classe</label>
+                            <select class="form-select" id="estoque-classe" required>
+                                <option value="">Selecione...</option>
+                                <option value="Corretivo">Corretivo</option>
+                                <option value="Defensivo">Defensivo</option>
+                                <option value="Fertilizante">Fertilizante</option>
+                                <option value="Herbicida">Herbicida</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-grupo" class="form-label">Grupo</label>
+                            <select class="form-select" id="estoque-grupo" required>
+                                <option value="">Selecione...</option>
+                                <option value="Corretivo">Corretivo</option>
+                                <option value="Adjuvante">Adjuvante</option>
+                                <option value="Formicida">Formicida</option>
+                                <option value="Fungicida">Fungicida</option>
+                                <option value="Inseticida">Inseticida</option>
+                                <option value="Inseticida - Fungicida">Inseticida - Fungicida</option>
+                                <option value="Adubo">Adubo</option>
+                                <option value="Foliar">Foliar</option>
+                                <option value="Pós">Pós</option>
+                                <option value="Pré">Pré</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-quantidade" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="estoque-quantidade" step="0.01" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-unidade" class="form-label">Unidade</label>
+                            <select class="form-select" id="estoque-unidade" required>
+                                <option value="">Selecione...</option>
+                                <option value="Kg">Kg</option>
+                                <option value="L">L</option>
+                                <option value="Sc">Sc</option>
+                                 </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-preco-compra" class="form-label">Preço de Compra (Unit.)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="estoque-preco-compra" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estoque-quantidade-minima" class="form-label">Quantidade Mínima</label>
+                            <input type="number" class="form-control" id="estoque-quantidade-minima" step="0.01" placeholder="Nível para alerta" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-estoque">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Aplicação -->
+<div class="modal fade" id="modalAplicacao" tabindex="-1" aria-labelledby="modalAplicacaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAplicacaoLabel">Dados da Aplicação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-aplicacao">
+                    <input type="hidden" id="aplicacao-id">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="aplicacao-talhao" class="form-label">Talhão</label>
+                            <select class="form-select" id="aplicacao-talhao" required></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="aplicacao-data" class="form-label">Data da Aplicação</label>
+                            <input type="date" class="form-control" id="aplicacao-data" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="aplicacao-produto" class="form-label">Produto</label>
+                            <select class="form-select" id="aplicacao-produto" required></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="aplicacao-quantidade" class="form-label">Quantidade Aplicada</label>
+                            <input type="number" class="form-control" id="aplicacao-quantidade" step="0.01" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-aplicacao">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Venda -->
+<div class="modal fade" id="modalVenda" tabindex="-1" aria-labelledby="modalVendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVendaLabel">Dados da Venda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-venda">
+                    <input type="hidden" id="venda-id">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="venda-talhao" class="form-label">Talhão</label>
+                            <select class="form-select" id="venda-talhao" required></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="venda-data" class="form-label">Data da Venda</label>
+                            <input type="date" class="form-control" id="venda-data" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="venda-sacas" class="form-label">Quantidade (scs)</label>
+                            <input type="number" class="form-control" id="venda-sacas" step="0.01" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="venda-preco-saca" class="form-label">Preço da Saca (R$)</label>
+                            <input type="number" class="form-control" id="venda-preco-saca" step="0.01" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-venda">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Colaborador -->
+<div class="modal fade" id="modalColaborador" tabindex="-1" aria-labelledby="modalColaboradorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalColaboradorLabel">Dados do Colaborador</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-colaborador">
+                    <input type="hidden" id="colaborador-id">
+                    <!-- Melhoria de Usabilidade: Agrupamento de campos -->
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-2">Dados Pessoais</legend>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="colaborador-nome" class="form-label">Nome Completo</label>
+                                <input type="text" class="form-control" id="colaborador-nome" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="colaborador-cpf" class="form-label">CPF</label>
+                                <input type="text" class="form-control" id="colaborador-cpf">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="colaborador-filiacao-mae" class="form-label">Nome da Mãe</label>
+                                <input type="text" class="form-control" id="colaborador-filiacao-mae">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="colaborador-filiacao-pai" class="form-label">Nome do Pai</label>
+                                <input type="text" class="form-control" id="colaborador-filiacao-pai">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-2">Informações de Contrato</legend>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="colaborador-admissao" class="form-label">Data de Admissão</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar-plus"></i></span>
+                                    <input type="date" class="form-control" id="colaborador-admissao">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="colaborador-cargo" class="form-label">Cargo</label>
+                                <input type="text" class="form-control" id="colaborador-cargo">
+                            </div>
+                        </div>
+                        <div class="row align-items-end">
+                            <div class="col-md-4 mb-3">
+                                <label for="colaborador-salario" class="form-label">Salário Mensal</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="colaborador-salario" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="colaborador-jornada" class="form-label">Jornada Mensal (horas)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-clock"></i></span>
+                                    <input type="number" class="form-control" id="colaborador-jornada" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="colaborador-valor-hora" class="form-label">Valor da Hora (calculado)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="text" class="form-control" id="colaborador-valor-hora" readonly disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-colaborador">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Maquinário -->
+<div class="modal fade" id="modalMaquinario" tabindex="-1" aria-labelledby="modalMaquinarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMaquinarioLabel">Dados do Maquinário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-maquinario">
+                    <input type="hidden" id="maquina-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="maquina-nome" class="form-label">Nome da Máquina</label>
+                            <input type="text" class="form-control" id="maquina-nome" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="maquina-marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="maquina-marca" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="maquina-modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="maquina-modelo" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="maquina-ano" class="form-label">Ano de Fabricação</label>
+                            <input type="number" class="form-control" id="maquina-ano" placeholder="Ex: 2022" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="maquina-valor-compra" class="form-label">Valor de Compra (R$)</label>
+                            <input type="number" class="form-control" id="maquina-valor-compra" step="0.01" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="maquina-vida-util" class="form-label">Vida Útil (horas)</label>
+                            <input type="number" class="form-control" id="maquina-vida-util" required>
+                        </div>                        
+                        <div class="col-md-3 mb-3">
+                            <label for="maquina-proxima-manutencao" class="form-label">Próxima Manutenção (em horas)</label>
+                            <input type="number" class="form-control" id="maquina-proxima-manutencao" placeholder="Ex: 500" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="maquina-tipo-combustivel" class="form-label">Tipo de Combustível</label>
+                            <select class="form-select" id="maquina-tipo-combustivel" required>
+                                <option value="diesel">Diesel</option>
+                                <option value="gasolina">Gasolina</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="maquina-consumo-combustivel" class="form-label">Consumo (L/h)</label>
+                            <input type="number" class="form-control" id="maquina-consumo-combustivel" step="0.01" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="maquina-preco-combustivel" class="form-label">Preço do Combustível (R$/L)</label>
+                            <input type="number" class="form-control" id="maquina-preco-combustivel" step="0.01" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-maquinario">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Atividade -->
+<div class="modal fade" id="modalAtividade" tabindex="-1" aria-labelledby="modalAtividadeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAtividadeLabel">Dados da Atividade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-tarefa">
+                    <input type="hidden" id="tarefa-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="tarefa-talhao" class="form-label">Talhão</label>
+                            <select class="form-select" id="tarefa-talhao" required></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tarefa-colaborador" class="form-label">Colaborador</label>
+                            <select class="form-select" id="tarefa-colaborador" required></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tarefa-maquinario" class="form-label">Maquinário</label>
+                            <select class="form-select" id="tarefa-maquinario"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="tarefa-descricao" class="form-label">Descrição da Atividade</label>
+                            <input type="text" class="form-control" id="tarefa-descricao" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="tarefa-horas" class="form-label">Horas</label>
+                            <input type="number" class="form-control" id="tarefa-horas" step="0.5" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="tarefa-custo-estimado" class="form-label">Custo Estimado</label>
+                            <input type="text" class="form-control" id="tarefa-custo-estimado" disabled readonly>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tarefa-data" class="form-label">Data da Atividade</label>
+                            <input type="date" class="form-control" id="tarefa-data" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-tarefa">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Seguro -->
+<div class="modal fade" id="modalSeguro" tabindex="-1" aria-labelledby="modalSeguroLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSeguroLabel">Dados do Seguro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-seguro">
+                    <input type="hidden" id="seguro-id">
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-2">Detalhes da Apólice</legend>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="seguro-apolice" class="form-label">Nº da Apólice</label>
+                                <input type="text" class="form-control" id="seguro-apolice" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="seguro-data" class="form-label">Data do Contrato</label>
+                                <input type="date" class="form-control" id="seguro-data" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="seguro-vencimento" class="form-label">Vencimento da Apólice</label>
+                                <input type="date" class="form-control" id="seguro-vencimento" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="seguro-valor" class="form-label">Valor do Prêmio (R$)</label>
+                                <input type="number" class="form-control" id="seguro-valor" step="0.01" required>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label for="seguro-contato" class="form-label">Contato (Corretor)</label>
+                                <input type="text" class="form-control" id="seguro-contato" placeholder="Nome, Telefone, Email..." required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-2">Objeto Segurado</legend>
+                        <div class="col-md-6 mb-3">
+                            <label for="seguro-tipo" class="form-label">Tipo</label>
+                            <select class="form-select" id="seguro-tipo" required>
+                                <option value="">Selecione</option>
+                                <option value="maquina">Máquina</option>
+                                <option value="fazenda">Fazenda</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="seguro-referencia" class="form-label">Referência (Máquina/Fazenda)</label>
+                            <select class="form-select" id="seguro-referencia" required>
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="seguro-cobertura" class="form-label">Cobertura</label>
+                            <textarea class="form-control" id="seguro-cobertura" rows="2" placeholder="Descreva o que o seguro cobre..." required></textarea>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="seguro-observacao" class="form-label">Observação</label>
+                            <input type="text" class="form-control" id="seguro-observacao">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-seguro">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Alerta -->
+<div class="modal fade" id="modalAlerta" tabindex="-1" aria-labelledby="modalAlertaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAlertaLabel">Dados do Alerta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-alerta">
+                    <input type="hidden" id="alerta-id">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="alerta-tipo" class="form-label">Tipo de Alerta</label>
+                            <select class="form-select" id="alerta-tipo" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="manutencao">Manutenção de Maquinário</option>
+                                <option value="estoque-baixo">Estoque Baixo</option>
+                                <option value="vencimento">Vencimento</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="alerta-criticidade" class="form-label">Criticidade</label>
+                            <select class="form-select" id="alerta-criticidade" required>
+                                <option value="baixa">Baixa</option>
+                                <option value="media">Média</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="alerta-data" class="form-label">Data do Alerta</label>
+                            <input type="date" class="form-control" id="alerta-data" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="alerta-descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="alerta-descricao" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-alerta">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Registrar Manutenção -->
+<div class="modal fade" id="modalManutencao" tabindex="-1" aria-labelledby="modalManutencaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalManutencaoLabel">Registrar Manutenção Realizada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-manutencao">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="manutencao-maquina-select" class="form-label">Máquina</label>
+                            <select class="form-select" id="manutencao-maquina-select" required></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="manutencao-data" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="manutencao-data" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manutencao-descricao" class="form-label">Descrição do Serviço</label>
+                        <textarea class="form-control" id="manutencao-descricao" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manutencao-custo" class="form-label">Custo Total (R$)</label>
+                        <input type="number" class="form-control" id="manutencao-custo" step="0.01" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-manutencao">Salvar Registro</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Esqueci a Senha -->
+<div class="modal fade" id="modalEsqueciSenha" tabindex="-1" aria-labelledby="modalEsqueciSenhaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEsqueciSenhaLabel"><i class="bi bi-key-fill"></i> Recuperar Senha</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-esqueci-senha">
+                    <p>Digite seu nome de usuário para que o sistema possa encontrar sua senha.</p>
+                    <div class="mb-3">
+                        <label for="esqueci-senha-username" class="form-label">Nome de Usuário</label>
+                        <input type="text" class="form-control" id="esqueci-senha-username" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-recuperar-senha">Recuperar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Consolidar Safra -->
+<div class="modal fade" id="modalConsolidarSafra" tabindex="-1" aria-labelledby="modalConsolidarSafraLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConsolidarSafraLabel">Consolidar Resultados da Safra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Insira os resultados reais da safra para comparar com o seu planejamento.</p>
+                <form id="form-consolidar-safra">
+                    <input type="hidden" id="consolidar-planejamento-id">
+                    <div class="mb-3">
+                        <label for="consolidar-producao-real" class="form-label">Produção Total Real (scs)</label>
+                        <input type="number" class="form-control" id="consolidar-producao-real" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="consolidar-preco-venda-real" class="form-label">Preço Médio de Venda Real (R$/sc)</label>
+                        <input type="number" class="form-control" id="consolidar-preco-venda-real" step="0.01" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-consolidacao">Salvar Consolidação</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js" defer></script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>

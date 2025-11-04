@@ -1,0 +1,368 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123",
+      "nome": "Administrador Rural",
+      "email": "admin@fazenda.com"
+    }
+  ],
+  "fazendas": [
+    {
+      "id": 1,
+      "nome": "Fazenda Boa Esperança",
+      "proprietario": "João da Silva",
+      "area": 500,
+      "area_producao": 450,
+      "area_reserva": 50
+    },
+    {
+      "id": 2,
+      "nome": "Sítio Alvorada",
+      "proprietario": "Maria Oliveira",
+      "area": 150,
+      "area_producao": 120,
+      "area_reserva": 30
+    }
+  ],
+  "talhoes": [
+    {
+      "id": 1,
+      "nome": "Talhão A1 - Soja",
+      "fazendaId": 1,
+      "cultura": "Soja",
+      "area": 100,
+      "ano_plantio": 2023,
+      "esp_linhas": 0.5,
+      "esp_plantas": 0.1,
+      "total_pes": 2000000
+    },
+    {
+      "id": 2,
+      "nome": "Talhão B2 - Milho",
+      "fazendaId": 1,
+      "cultura": "Milho",
+      "area": 150,
+      "ano_plantio": 2023,
+      "esp_linhas": 0.8,
+      "esp_plantas": 0.2,
+      "total_pes": 937500
+    },
+    {
+      "id": 3,
+      "nome": "Pomar de Café",
+      "fazendaId": 2,
+      "cultura": "Café",
+      "area": 50,
+      "ano_plantio": 2020,
+      "esp_linhas": 3.5,
+      "esp_plantas": 0.7,
+      "total_pes": 204081
+    },
+    {
+      "id": 4,
+      "nome": "Canavial Principal",
+      "fazendaId": 1,
+      "cultura": "Cana-de-açúcar",
+      "area": 200,
+      "ano_plantio": 2022,
+      "esp_linhas": 1.5,
+      "esp_plantas": 0.5,
+      "total_pes": 2666666
+    }
+  ],
+  "safras": [
+    {
+      "id": 1,
+      "nome": "Soja 23/24 - Consolidado",
+      "talhaoId": 1,
+      "cultura": "Soja",
+      "area": 100,
+      "custo_ha": 3500,
+      "produtividade": 65,
+      "preco_saca": 130,
+      "consolidado": true,
+      "custo_real": 365000,
+      "producao_real": 6800,
+      "preco_venda_real": 135.5
+    },
+    {
+      "id": 2,
+      "nome": "Milho Safrinha 24",
+      "talhaoId": 2,
+      "cultura": "Milho",
+      "area": 150,
+      "custo_ha": 2800,
+      "produtividade": 180,
+      "preco_saca": 65,
+      "consolidado": false
+    }
+  ],
+  "estoque": [
+    {
+      "id": 1,
+      "nome": "Glifosato XPTO",
+      "tipo": "defensivos",
+      "quantidade": 180,
+      "unidade": "L",
+      "quantidade_minima": 50,
+      "preco_compra": 45.5,
+      "classe": "Herbicida",
+      "grupo": "Pós"
+    },
+    {
+      "id": 2,
+      "nome": "Semente de Soja TMG 7059",
+      "tipo": "sementes",
+      "quantidade": 500,
+      "unidade": "Kg",
+      "quantidade_minima": 100,
+      "preco_compra": 12,
+      "classe": "Semente",
+      "grupo": "Variedade A"
+    },
+    {
+      "id": 3,
+      "nome": "Ureia Agrícola",
+      "tipo": "fertilizantes",
+      "quantidade": 850,
+      "unidade": "Kg",
+      "quantidade_minima": 250,
+      "preco_compra": 2.8,
+      "classe": "Fertilizante",
+      "grupo": "Nitrogenado"
+    },
+    {
+      "id": 4,
+      "nome": "Inseticida Attack",
+      "tipo": "defensivos",
+      "quantidade": 45,
+      "unidade": "L",
+      "quantidade_minima": 20,
+      "preco_compra": 120,
+      "classe": "Defensivo",
+      "grupo": "Inseticida"
+    }
+  ],
+  "aplicacoes": [
+    {
+      "id": 1,
+      "talhaoId": 1,
+      "data": "2023-11-15",
+      "produtoId": 1,
+      "quantidade": 20,
+      "custo": 910
+    },
+    {
+      "id": 2,
+      "talhaoId": 2,
+      "data": "2024-02-20",
+      "produtoId": 3,
+      "quantidade": 150,
+      "custo": 420
+    }
+  ],
+  "vendas": [
+    {
+      "id": 1,
+      "talhaoId": 1,
+      "data": "2024-04-20",
+      "scs": 6800,
+      "preco_saca": 135.5
+    },
+    {
+      "id": 2,
+      "talhaoId": 3,
+      "data": "2024-05-10",
+      "scs": 300,
+      "preco_saca": 2100
+    }
+  ],
+  "colaboradores": [
+    {
+      "id": 1,
+      "nome": "Carlos Pereira",
+      "cpf": "111.222.333-44",
+      "filiacao_mae": "Maria Pereira",
+      "filiacao_pai": "José Pereira",
+      "admissao": "2022-01-15",
+      "cargo": "Operador de Máquinas",
+      "salario": 3500,
+      "jornada": 220,
+      "valor_hora": 15.91
+    },
+    {
+      "id": 2,
+      "nome": "Ana Souza",
+      "cpf": "555.666.777-88",
+      "filiacao_mae": "Rita Souza",
+      "filiacao_pai": "Antônio Souza",
+      "admissao": "2023-03-10",
+      "cargo": "Agrônoma",
+      "salario": 6000,
+      "jornada": 200,
+      "valor_hora": 30
+    }
+  ],
+  "maquinario": [
+    {
+      "id": 1,
+      "nome": "Trator John Deere 6110J",
+      "marca": "John Deere",
+      "modelo": "6110J",
+      "ano": 2021,
+      "valor_compra": 450000,
+      "vida_util": 10000,
+      "tipo_combustivel": "diesel",
+      "consumo_combustivel": 15,
+      "preco_combustivel": 5.8,
+      "proxima_manutencao_horas": 500,
+      "horas_uso": 480
+    },
+    {
+      "id": 2,
+      "nome": "Colheitadeira S760",
+      "marca": "John Deere",
+      "modelo": "S760",
+      "ano": 2022,
+      "valor_compra": 1800000,
+      "vida_util": 8000,
+      "tipo_combustivel": "diesel",
+      "consumo_combustivel": 30,
+      "preco_combustivel": 5.8,
+      "proxima_manutencao_horas": 400,
+      "horas_uso": 310
+    }
+  ],
+  "atividades": [
+    {
+      "id": 1,
+      "talhaoId": 1,
+      "colaboradorId": 1,
+      "maquinarioId": 1,
+      "descricao": "Aplicação de Herbicida (Soja)",
+      "horas": 8,
+      "data": "2023-11-15",
+      "status": "concluido",
+      "custo": 823.28
+    },
+    {
+      "id": 2,
+      "talhaoId": 2,
+      "colaboradorId": 1,
+      "maquinarioId": 1,
+      "descricao": "Adubação de Cobertura (Milho)",
+      "horas": 12,
+      "data": "2024-02-20",
+      "status": "concluido",
+      "custo": 1234.92
+    },
+    {
+      "id": 3,
+      "talhaoId": 4,
+      "colaboradorId": 1,
+      "maquinarioId": 2,
+      "descricao": "Colheita da Cana",
+      "horas": 40,
+      "data": "2024-08-10",
+      "status": "a-fazer",
+      "custo": 7608.4
+    },
+    {
+      "id": 4,
+      "talhaoId": 3,
+      "colaboradorId": 2,
+      "maquinarioId": 1,
+      "descricao": "Inspeção de pragas no cafezal",
+      "horas": 4,
+      "data": "2024-06-25",
+      "status": "em-andamento",
+      "custo": 468
+    }
+  ],
+  "financas": [
+    {
+      "id": 1,
+      "tipo": "receita",
+      "valor": 921400,
+      "descricao": "Venda de 6800 scs",
+      "data": "2024-04-20",
+      "talhaoId": 1
+    },
+    {
+      "id": 2,
+      "tipo": "despesa",
+      "valor": 910,
+      "descricao": "Custo de aplicação: Glifosato XPTO",
+      "data": "2023-11-15",
+      "talhaoId": 1
+    },
+    {
+      "id": 3,
+      "tipo": "despesa",
+      "valor": 420,
+      "descricao": "Custo de aplicação: Ureia Agrícola",
+      "data": "2024-02-20",
+      "talhaoId": 2
+    },
+    {
+      "id": 4,
+      "tipo": "receita",
+      "valor": 630000,
+      "descricao": "Venda de 300 scs",
+      "data": "2024-05-10",
+      "talhaoId": 3
+    },
+    {
+      "id": 5,
+      "tipo": "despesa",
+      "valor": 15000,
+      "descricao": "Prêmio de seguro (Fazenda Boa Esperança) apólice SEG-001",
+      "data": "2024-01-10",
+      "talhaoId": null
+    },
+    {
+      "id": 6,
+      "tipo": "despesa",
+      "valor": 2500,
+      "descricao": "Manutenção: Troca de óleo e filtros",
+      "data": "2024-03-05",
+      "talhaoId": null
+    }
+  ],
+  "alertas": [
+    {
+      "id": 1,
+      "tipo": "manutencao",
+      "criticidade": "media",
+      "data": "2024-06-20",
+      "descricao": "Manutenção necessária para a máquina \"Trator John Deere 6110J\". Horas restantes: 20."
+    }
+  ],
+  "manutencoes": [
+    {
+      "id": 1,
+      "maquinaId": 2,
+      "data": "2024-03-05",
+      "descricao": "Troca de óleo e filtros",
+      "custo": 2500
+    }
+  ],
+  "seguros": [
+    {
+      "id": 1,
+      "tipo": "fazenda",
+      "referenciaTipo": "fazenda",
+      "referenciaId": 1,
+      "referenciaNome": "Fazenda Boa Esperança",
+      "apolice": "SEG-001",
+      "valor": 15000,
+      "data": "2024-01-10",
+      "vencimento": "2025-01-10",
+      "contato": "Segura Agro - (11) 98765-4321",
+      "cobertura": "Cobertura contra incêndio e eventos climáticos para toda a área da fazenda.",
+      "observacao": ""
+    }
+  ]
+}

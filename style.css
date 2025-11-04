@@ -1,0 +1,362 @@
+/* Melhoria de Interface: Paleta de cores rural */
+:root {
+    /* Tema Claro (Padrão) */
+    --cor-verde-escuro: #2E4636;
+    --cor-verde-destaque: #4A7729;
+    --cor-fundo: #F1F8F1; /* Verde-acinzentado muito claro */
+    --cor-texto: #3D3522;
+    --cor-bege-claro: #EAE7DC;
+    --cor-card-fundo: #FFFFFF;
+    --cor-borda: #dee2e6;
+
+    /* Cores de Status */
+    --cor-sucesso: #5CB85C;
+    --cor-perigo: #D9534F;
+    --cor-aviso: #F0AD4E;
+}
+
+/* Melhoria de UI: Tema Escuro */
+[data-theme="dark"] {
+    --cor-fundo: #121212;
+    --cor-card-fundo: #1e1e1e;
+    --cor-texto: #EAE7DC;
+    --cor-verde-escuro: #a5d6a7; /* Cor de destaque para títulos no modo escuro */
+    --cor-borda: #444;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    transition: background-color 0.5s ease;
+    /* Melhoria de Interface: Fundo sólido e profissional */
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+body.login-active {
+    background-color: #2E4636; /* Garante o fundo verde escuro na tela de login */
+}
+
+h1, h2, h3, h4, h5, h6, .card-title {
+    font-family: 'Merriweather', serif;
+    color: var(--cor-verde-escuro) !important;
+}
+
+.btn-primary {
+    background-color: var(--cor-verde-destaque);
+    border-color: var(--cor-verde-destaque);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #3e6322;
+    border-color: #3e6322;
+}
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    /* Melhoria de Interface: Caixa de login limpa */
+    background-color: var(--cor-card-fundo);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
+}
+.login-header {
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(46, 70, 54, 0.2);
+}
+
+/* Melhoria de Usabilidade: Aumentar fonte base */
+body, .form-control, .form-select, .btn {
+    font-size: 1.05rem;
+}   
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+.sidebar {
+    width: 250px;
+    /* Melhoria de Interface: Cor sólida para credibilidade */
+    background-color: var(--cor-verde-escuro);
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+.sidebar .nav-link {
+    color: #adb5bd;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: 1050; /* Garante que fique sobre o conteúdo */
+    }
+    .sidebar.show {
+        transform: translateX(0);
+    }
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+    color: var(--cor-verde-escuro);
+    background-color: var(--cor-bege-claro);
+    border-radius: 5px;
+}
+.sidebar .nav-link i {
+    margin-right: 10px;
+}
+.main-content {
+    padding: 20px;
+    width: 100%;
+}
+
+@media (min-width: 992.1px) {
+    .main-content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+}
+.panel {
+    /* Melhoria de Interface: Painéis com fundo branco para destaque */
+    background-color: var(--cor-card-fundo);
+    border: 1px solid var(--cor-borda);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.card {
+    background-color: var(--cor-card-fundo);
+    border: 1px solid var(--cor-borda);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+/* Melhoria de Interface: Estilo para cards de estatística do dashboard */
+.card-stat {
+    background-color: #e8f5e9; /* Um verde muito claro */
+}
+.card-stat-warning {
+    background-color: #fffde7; /* Um amarelo muito claro */
+}
+[data-theme="dark"] .card-stat, [data-theme="dark"] .card-stat-warning {
+    background-color: #2a2a2a;
+    border-color: var(--cor-borda);
+}
+.card-header {
+    background-color: var(--cor-bege-claro);
+    font-weight: bold;
+    border-bottom: 1px solid var(--cor-borda);
+}
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(74, 119, 41, 0.25);
+}
+.cotacao-header {
+    background-color: #495057;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px 8px 0 0;
+}
+.cotacao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+.cotacao-item:not(:last-child) {
+    border-bottom: 1px solid var(--cor-borda);
+}
+.tarefa-item.completed h5, .tarefa-item.completed p {
+    text-decoration: line-through;
+    color: #6c757d !important;
+}
+/* Melhoria de Interface: Detalhes em cards */
+.card-details span {
+    display: inline-block;
+    margin-right: 15px;
+}
+.card-details i {
+    color: #6c757d;
+}
+/* Melhoria de Interface: Abas de Login/Registro */
+.nav-pills .nav-link {
+    color: var(--cor-texto);
+}
+.nav-pills .nav-link.active {
+    background-color: var(--cor-verde-destaque);
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.main-content {
+    /* Garante que o fundo do conteúdo principal seja sólido */
+    min-height: 100vh;
+}
+
+/* Ajustes para Modo Escuro */
+[data-theme="dark"] .card,
+[data-theme="dark"] .list-group-item,
+[data-theme="dark"] .modal-content {
+    background-color: var(--cor-card-fundo);
+    color: var(--cor-texto);
+    border-color: var(--cor-borda);
+}
+
+[data-theme="dark"] .form-control, [data-theme="dark"] .form-select {
+    background-color: #333;
+    color: var(--cor-texto);
+    border-color: var(--cor-borda);
+}
+
+/* Estilo para campos desabilitados parecerem mais legíveis */
+.form-control:disabled, .form-control[readonly] {
+    background-color: #e9ecef;
+}
+
+/* Melhoria de Usabilidade: Agrupamento de campos em modais */
+fieldset {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.375rem;
+}
+
+legend {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--cor-verde-escuro);
+}
+
+/* Melhoria de Funcionalidade: Estilos do Chatbot IA */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.chatbot-toggle-btn {
+    background-color: var(--cor-verde-destaque);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.chatbot-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.chatbot-window {
+    width: 350px;
+    height: 500px;
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chatbot-header {
+    background-color: var(--cor-verde-escuro);
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chatbot-body {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chatbot-message {
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.chatbot-message.ai {
+    background-color: var(--cor-bege-claro);
+    color: #333;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.chatbot-message.user {
+    background-color: var(--cor-verde-destaque);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.chatbot-footer {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.chatbot-footer input {
+    flex-grow: 1;
+    border: 1px solid var(--cor-borda);
+    border-radius: 20px;
+    padding: 8px 15px;
+    margin-right: 10px;
+}
+
+.chatbot-footer button {
+    background-color: var(--cor-verde-destaque);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+/* Estilos para o Painel de Relatórios */
+.report-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+.report-item:last-child {
+    border-bottom: none;
+}
+
+[data-theme="dark"] .table {
+    --bs-table-bg: var(--cor-card-fundo);
+    --bs-table-color: var(--cor-texto);
+    --bs-table-border-color: var(--cor-borda);
+    --bs-table-striped-bg: #2c3034;
+}
