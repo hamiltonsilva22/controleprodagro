@@ -13,10 +13,6 @@ Este projeto é um sistema simples de controle de produção agrícola, desenvol
 - CSS3
 - JavaScript
 
-##  Deploy
-O projeto está online e pode ser acessado via Netlify:
-
-** Link:** *(adicione aqui seu link Netlify)*
 
 E também pode ser configurado no GitHub Pages.
 
